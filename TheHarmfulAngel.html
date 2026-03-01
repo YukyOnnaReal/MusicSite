@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxious Inc Studio · The Harmful Angel · player</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030303;
+            color: #e0dcd0;
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            line-height: 1.5;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(20, 10, 5, 0.3) 0px, transparent 2px, transparent 8px),
+                radial-gradient(circle at 20% 40%, rgba(100, 40, 20, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 90% 70%, rgba(180, 130, 50, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 30px 0;
+            backdrop-filter: blur(0.5px);
+        }
+
+        /* ===== НАВИГАЦИЯ ===== */
+        header.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a1f17;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #b77e55;
+            text-shadow: 0 0 8px #7a3f1f;
+            letter-spacing: 4px;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* ===== КНОПКА ВОЗВРАТА ===== */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: rgba(30, 19, 14, 0.8);
+            color: #cd9f73;
+            border: 1px solid #7b522f;
+            padding: 8px 22px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3), 0 0 0 1px #9b5f33 inset;
+        }
+
+        .back-button:hover {
+            background: #7b522f;
+            color: #030303;
+            border-color: #d6985b;
+            box-shadow: 0 3px 15px #b85f1e, 0 0 0 1px #e5a56b inset;
+        }
+
+        /* ===== ПЛЕЕР ===== */
+        .player-container {
+            max-width: 900px;
+            margin: 40px auto 60px;
+            background: #0e0b09;
+            border: 3px solid #4f3323;
+            box-shadow: 
+                0 0 0 2px #1e130e,
+                0 0 0 4px #32241d,
+                0 20px 35px -15px #000,
+                0 0 50px rgba(140, 70, 30, 0.4);
+            padding: 45px 45px 55px;
+            position: relative;
+        }
+
+        .player-container::before {
+            content: "✧ ✦ ✧";
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #030303;
+            padding: 0 30px;
+            color: #b57c4a;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            text-shadow: 0 0 8px #daa06a;
+            border-left: 2px solid #9b5f33;
+            border-right: 2px solid #9b5f33;
+        }
+
+        .player-container::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 15%;
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b77e55, #f0c48b, #b77e55, transparent);
+        }
+
+        .cover-wrapper {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            border: 6px solid #32241d;
+            box-shadow: 
+                0 0 0 3px #9b5f33,
+                0 15px 30px -10px #000,
+                0 0 0 1px #e5a56b inset;
+            overflow: hidden;
+            position: relative;
+            transition: none;
+        }
+
+        .cover-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.1);
+            transition: none;
+        }
+
+        .track-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .track-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ebdbbc;
+            text-shadow: 
+                0 2px 0 #3e1e0e,
+                2px 4px 8px #000,
+                0 0 15px #ac6f3f,
+                3px 3px 0 #32241d;
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .track-sub {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #cd9f73;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #5b3c29;
+            padding-bottom: 12px;
+            display: inline-block;
+            padding-left: 30px;
+            padding-right: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        .track-meta {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0 25px;
+            color: #ac9b88;
+            font-size: 1.1rem;
+        }
+
+        .track-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== ЭЛЕМЕНТЫ ПЛЕЕРА ===== */
+        .play-button {
+            background: linear-gradient(145deg, #1e130e, #2f2018);
+            border: 2px solid #9b5f33;
+            color: #ebc397;
+            font-size: 1.5rem;
+            padding: 16px 50px;
+            margin: 30px auto 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            width: fit-content;
+            display: block;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5), 0 0 0 1px #b77e55 inset;
+        }
+
+        .play-button:hover {
+            background: linear-gradient(145deg, #2f2018, #1e130e);
+            border-color: #d6985b;
+            box-shadow: 0 5px 20px #b85f1e, 0 0 0 2px #e5a56b inset;
+            color: #fadfad;
+            transform: scale(1.02);
+        }
+
+        .play-button.playing {
+            background: #5a3a24;
+            color: #fadfad;
+            border-color: #d6985b;
+            box-shadow: 0 0 20px #b85f1e, 0 0 0 2px #e5a56b inset;
+        }
+
+        .player-controls {
+            width: 100%;
+            margin: 25px 0 15px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: #1e130e;
+            border: 2px solid #4f3323;
+            cursor: pointer;
+            margin: 20px 0 8px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #b77e55, #e5a56b);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px #e5a56b;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #9b8a78;
+            font-family: monospace;
+            padding: 0 5px;
+        }
+
+        .volume-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 15px;
+        }
+
+        .volume-icon {
+            color: #b77e55;
+            font-size: 1.4rem;
+        }
+
+        .volume-slider {
+            width: 150px;
+            height: 6px;
+            background: #1e130e;
+            border: 1px solid #5b3c29;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #b77e55;
+            cursor: pointer;
+            border: 2px solid #e5a56b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #b85f1e;
+        }
+
+        /* ===== ТЕКСТ ПЕСНИ В ДВЕ КОЛОНКИ ===== */
+        .lyrics-section {
+            margin: 60px 0 50px;
+            background: #0a0706;
+            border: 3px solid #32241d;
+            padding: 40px;
+            box-shadow: 
+                0 0 0 2px #1e130e,
+                0 0 0 4px #32241d inset,
+                0 20px 30px -15px #000;
+        }
+
+        .lyrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .lyrics-col {
+            text-align: left;
+        }
+
+        .lyrics-col h2 {
+            color: #b77e55;
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #4f3323;
+            padding-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .lyrics-text {
+            color: #d4c5b5;
+            font-size: 0.95rem;
+            font-family: 'Georgia', serif;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .lyrics-text i {
+            color: #cd9f73;
+            font-style: italic;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.95rem;
+        }
+
+        .lyrics-text br {
+            content: "";
+            display: block;
+            margin: 2px 0;
+        }
+
+        /* Уменьшенные отступы между куплетами */
+        .lyrics-text br + br {
+            margin: 6px 0;
+        }
+
+        /* ===== УЗКИЙ ФУТЕР ===== */
+        footer {
+            margin-top: 60px;
+            border-top: 3px solid #3d2d22;
+            padding: 25px 0 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #6f5b4a;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+        }
+
+        /* адаптация */
+        @media (max-width: 900px) {
+            .lyrics-grid { grid-template-columns: 1fr; gap: 30px; }
+            .track-title { font-size: 2.8rem; letter-spacing: 6px; }
+            .cover-wrapper { width: 250px; height: 250px; }
+            .back-button { top: 15px; right: 15px; padding: 6px 18px; font-size: 0.85rem; }
+            .player-container { padding: 30px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Кнопка возврата -->
+    <a href="index.html" class="back-button">RETURN</a>
+
+<div class="wrapper">
+    <header class="container">
+        <span class="logo"></span>
+        <nav></nav>
+    </header>
+
+    <!-- Основной блок плеера -->
+    <div class="player-container">
+        <div class="cover-wrapper">
+            <img src="arts/image.png" alt="The Harmful Angel" onerror="this.src='https://via.placeholder.com/400x400/1a0f0a/b87e54?text=The+Harmful+Angel'">
+        </div>
+        
+        <div class="track-info">
+            <h1 class="track-title">THE HARMFUL ANGEL</h1>
+            <div class="track-sub">SINGLE</div>
+            <div class="track-sub">ELECTRONICORE · GOTHIC ROCK · DARK-CABARET</div>
+            
+            <div class="track-meta">
+                <span>🗓️ 10.10.2025</span>
+                <span>✟ †ＥＸＳＵＬ†</span>
+            </div>
+        </div>
+        
+        <!-- Кнопка play/pause -->
+        <button class="play-button" id="playButton">LISTEN</button>
+        
+        <!-- Элементы управления плеером -->
+        <div class="player-controls">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="duration">5:37</span>
+            </div>
+            
+            <div class="volume-wrapper">
+                <span class="volume-icon">🔊</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
+            </div>
+        </div>
+        
+        <audio id="audioPlayer">
+            <source src="music/2025-10-24 08-58-57 (mp3cut.net) (1).mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Текст песни в две колонки -->
+    <div class="lyrics-section">
+        <div class="lyrics-grid">
+            <!-- Левая колонка - оригинал -->
+            <div class="lyrics-col">
+                <h2>LYRICS</h2>
+                <div class="lyrics-text">
+                    <i>Intro</i>I can hear it... the silent hum of decay... it's... beautiful?..<br>
+                    <br>
+                    <i>Verse 1</i>I was the blade in hand of God,<br>
+                    The perfect man on sacred sod.<br>
+                    But I saw cracks in His design<br>
+                    A clockwork world without a sign.<br>
+                    This world you worship, sterile, dead,<br>
+                    Now bleeds with failure, stain in red.<br>
+                    The system's failing, life erased,<br>
+                    By my own hand, it is defaced.<br>
+                    <br>
+                    <i>Verse 2</i>You cling to virtues, weak and frail,<br>
+                    To stories told in fairy tale.<br>
+                    I'll be the shepherd for your sheep,<br>
+                    And lead them to the darkness deep.<br>
+                    Your trembling hands, your silent screams,<br>
+                    Are fuel for my corrosive dreams.<br>
+                    I'll twist your love and make it fear,<br>
+                    My toxic gospel, sharp and clear.<br>
+                    <br>
+                    <i>Pre-Chorus</i>So don't you pray for your salvation.<br>
+                    This is my final revelation.<br>
+                    Your paradise in my control,<br>
+                    I'm eating it from inside whole!<br>
+                    <br>
+                    <i>Chorus</i>My wings are pollen of your hope,<br>
+                    I'll drive you mad, lead down the slope!<br>
+                    I am the sickness, final scene!<br>
+                    The harmful angel, bad and keen!<br>
+                    You built this hell, now breathe the air!<br>
+                    A toxic nectar of despair!<br>
+                    Your faith is rust, your prayers are lies,<br>
+                    Reflected in my hollow eyes!<br>
+                    <br>
+                    <i>Verse 3</i>You fragile souls with trembling hands,<br>
+                    Begging for order in bleed lands.<br>
+                    I'll offer guidance, helping light -<br>
+                    That leads you deep in endless night.<br>
+                    Your pious screams are just a score,<br>
+                    As I corrupt your sacred core.<br>
+                    <br>
+                    <i>Verse 4</i>I trace the cracks in your belief.<br>
+                    And offer you a false relief.<br>
+                    A guiding light? A helping hand?<br>
+                    I can't to make you understand...<br>
+                    I am the error in design.<br>
+                    The bitter truth, the dying vine.<br>
+                    <br>
+                    <i>Bridge</i>You think this is a fall from grace?!<br>
+                    I chose to occupy this space!<br>
+                    I am the virus in divine!<br>
+                    The flaw that twists your sacred line!<br>
+                    So choke upon your sacred plea,<br>
+                    Your god means nothing here to me!<br>
+                    <br>
+                    <i>Breakdown</i>As long as I'm here, my promise true,<br>
+                    The vow that swore, I'll see it through.<br>
+                    I won't forget the sacred debt,<br>
+                    To drown your world in deep regret...<br>
+                    <br>
+                    <i>Monologue</i>This is my promise...to ruin you... ALL!<br>
+                    <br>
+                    <i>Final Chorus</i>My wings are pollen of your hope,<br>
+                    I'll drive you mad, lead down the slope!<br>
+                    I am the sickness, final scene!<br>
+                    The harmful angel, bad and keen!<br>
+                    You built this hell, now breathe the air!<br>
+                    A toxic nectar of despair!<br>
+                    Your faith is rust, your prayers are lies,<br>
+                    Reflected in my hollow eyes!<br>
+                    <br>
+                    <i>Outro</i>My wings of dust on my false trail...<br>
+                    A harmful angel never fail...<br>
+                </div>
+            </div>
+            
+            <!-- Правая колонка - перевод -->
+            <div class="lyrics-col">
+                <h2>LYRICS (RUS)</h2>
+                <div class="lyrics-text">
+                    <i>Интро</i>Я слышу это... тихий гул разложения... Он... прекрасен?..<br>
+                    <br>
+                    <i>Куплет 1</i>Я был клинком в руке Бога,<br>
+                    Идеальным человеком на священной земле.<br>
+                    Но я увидел трещины в Его замысле,<br>
+                    Мир-часы без единого знака.<br>
+                    Этот мир, который вы боготворите, стерильный, мёртвый,<br>
+                    Теперь истекает кровью неудач, пятном красным.<br>
+                    Система рушится, жизнь стирается,<br>
+                    Моей же рукой, она обезображена.<br>
+                    <br>
+                    <i>Куплет 2</i>Вы цепляетесь за добродетели, слабые и хрупкие,<br>
+                    За истории, рассказанные в сказках.<br>
+                    Я буду пастырем для ваших овец,<br>
+                    И поведу их во тьму глубочайшую.<br>
+                    Ваши дрожащие руки, ваши безмолвные крики —<br>
+                    Топливо для моих разъедающих грёз.<br>
+                    Я искажу вашу любовь и превращу её в страх,<br>
+                    Моё ядовитое евангелие, резкое и ясное.<br>
+                    <br>
+                    <i>Распевка</i>Так не молись о своём спасении.<br>
+                    Это моё окончательное откровение.<br>
+                    Твой рай под моим контролем,<br>
+                    Я пожираю его изнутри целиком!<br>
+                    <br>
+                    <i>Припев</i>Мои крылья — пыльца твоей надежды,<br>
+                    Я сведу тебя с ума, уведу под уклон!<br>
+                    Я — болезнь, финальная сцена!<br>
+                    Вредоносный ангел, дурной и острый!<br>
+                    Ты сам построил этот ад, теперь дыши этим воздухом!<br>
+                    Токсичным нектаром отчаяния!<br>
+                    Твоя вера — ржавчина, твои молитвы — ложь,<br>
+                    Отражённая в моих пустых глазах!<br>
+                    <br>
+                    <i>Куплет 3</i>Вы, хрупкие души с дрожащими руками,<br>
+                    Умоляющие о порядке на окровавленных землях.<br>
+                    Я предложу руководство, свет помощи —<br>
+                    Который заведёт вас глубоко в бесконечную ночь.<br>
+                    Ваши благочестивые крики — просто музыка,<br>
+                    Пока я разлагаю вашу священную суть.<br>
+                    <br>
+                    <i>Куплет 4</i>Я прослеживаю трещины в вашей вере<br>
+                    И предлагаю вам ложное облегчение.<br>
+                    Путеводный свет? Протянутую руку?<br>
+                    Я не могу заставить вас понять...<br>
+                    Я — ошибка в проекте,<br>
+                    Горькая правда, умирающая лоза.<br>
+                    <br>
+                    <i>Переход</i>Думаете, это падение с небес?!<br>
+                    Я сам выбрал это пространство!<br>
+                    Я — вирус в божественном!<br>
+                    Изъян, искажающий вашу священную линию!<br>
+                    Так подавись же своей священной мольбой,<br>
+                    Твой бог здесь ничего для меня не значит!<br>
+                    <br>
+                    <i>Срыв</i>Пока я здесь, моё обещание истинно,<br>
+                    Клятва, что я дал, я исполню её.<br>
+                    Я не забуду священный долг —<br>
+                    Утопить твой мир в глубоком сожалении...<br>
+                    <br>
+                    <i>Монолог</i>Это моё обещание... уничтожить вас... ВСЕХ!<br>
+                    <br>
+                    <i>Финальный припев</i>Мои крылья — пыльца твоей надежды,<br>
+                    Я сведу тебя с ума, уведу под уклон!<br>
+                    Я — болезнь, финальная сцена!<br>
+                    Вредоносный ангел, дурной и острый!<br>
+                    Ты сам построил этот ад, теперь дыши этим воздухом!<br>
+                    Токсичным нектаром отчаяния!<br>
+                    Твоя вера — ржавчина, твои молитвы — ложь,<br>
+                    Отражённая в моих пустых глазах!<br>
+                    <br>
+                    <i>Концовка</i>Мои крылья из пыли на моём ложном пути...<br>
+                    Вредоносный ангел никогда не подводит...<br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>COPYRIGHT ® 2026 ALL RIGHTS RESERVED</p>
+    </footer>
+</div>
+
+<script>
+    // Элементы плеера
+    const playButton = document.getElementById('playButton');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    audioPlayer.volume = volumeSlider.value;
+
+    playButton.addEventListener('click', function() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playButton.textContent = 'PAUSE';
+            playButton.classList.add('playing');
+        } else {
+            audioPlayer.pause();
+            playButton.textContent = 'LISTEN';
+            playButton.classList.remove('playing');
+        }
+    });
+
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('loadedmetadata', function() {
+        const duration = audioPlayer.duration;
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60);
+        durationEl.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    });
+
+    progressContainer.addEventListener('click', setProgress);
+
+    volumeSlider.addEventListener('input', function() {
+        audioPlayer.volume = volumeSlider.value;
+    });
+
+    audioPlayer.addEventListener('ended', function() {
+        playButton.textContent = 'LISTEN';
+        playButton.classList.remove('playing');
+        audioPlayer.currentTime = 0;
+        progressBar.style.width = '0%';
+        currentTimeEl.textContent = '0:00';
+    });
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updateProgress() {
+        const { currentTime, duration } = audioPlayer;
+        if (!isNaN(duration)) {
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            currentTimeEl.textContent = formatTime(currentTime);
+        }
+    }
+
+    function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audioPlayer.duration;
+        if (!isNaN(duration)) {
+            audioPlayer.currentTime = (clickX / width) * duration;
+        }
+    }
+</script>
+</body>
+</html>

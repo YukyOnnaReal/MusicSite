@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxious Inc Studio · Music · The Harmful Angel Never Fail</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030303;
+            color: #e0dcd0;
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            line-height: 1.5;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(20, 10, 5, 0.3) 0px, transparent 2px, transparent 8px),
+                radial-gradient(circle at 20% 40%, rgba(100, 40, 20, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 90% 70%, rgba(180, 130, 50, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 30px 0;
+            backdrop-filter: blur(0.5px);
+        }
+
+        .angelic-header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            border-bottom: 2px solid #5f3b2c;
+            box-shadow: 0 10px 20px -10px rgba(140, 70, 30, 0.4);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .angelic-header::before {
+            content: "✧ ✦ ✧";
+            font-size: 2rem;
+            letter-spacing: 12px;
+            color: #b57c4a;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 5px;
+            text-shadow: 0 0 8px #daa06a;
+        }
+
+        .angelic-header::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 15%;
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b77e55, #f0c48b, #b77e55, transparent);
+        }
+
+        .angelic-title {
+            font-family: 'Cinzel', 'Georgia', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            word-spacing: 8px;
+            color: #f3e6d0;
+            text-shadow: 
+                0 2px 0 #3e1e0e,
+                2px 4px 4px rgba(0,0,0,0.8),
+                0 0 10px #ac6f3f,
+                0 0 20px #7a431d;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .angelic-sub {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #cd9f73;
+            letter-spacing: 6px;
+            text-transform: lowercase;
+            border-top: 1px dashed #5b3c29;
+            display: inline-block;
+            padding-top: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            backdrop-filter: blur(1px);
+        }
+
+        header.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a1f17;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #b77e55;
+            text-shadow: 0 0 8px #7a3f1f;
+            letter-spacing: 4px;
+            font-family: 'Cinzel', serif;
+        }
+
+        nav {
+            width: 100%;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Home слева с отступом */
+        nav ul li:first-child {
+            margin-right: auto;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #b8aa9a;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            border: 1px solid transparent;
+        }
+
+        nav ul li.active a,
+        nav ul li a:hover {
+            color: #fadfad;
+            background: rgba(90, 40, 20, 0.5);
+            border-color: #ad6d42;
+            box-shadow: 0 0 12px #b85f1e;
+            text-shadow: 0 0 5px #e5b282;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1e130e;
+            min-width: 220px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+            border: 1px solid #7a522f;
+            z-index: 10;
+            border-radius: 12px;
+            right: 0;
+            top: 35px;
+            padding: 8px 0;
+        }
+        .dropdown-content a {
+            color: #eaceb0;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #3e2a1b;
+            border-radius: 0;
+            text-decoration: none;
+        }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background: #442e1f; color: #ffdbb5; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        .telegram-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eaceb0'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.43.52-.47-.01-1.37-.26-2.04-.48-.82-.27-1.47-.42-1.42-.89.03-.24.27-.49.74-.74 2.94-1.28 4.9-2.13 5.89-2.55 2.8-1.17 3.38-1.38 3.76-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06-.01.15-.02.24z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px 25px;
+            margin: 50px 0;
+        }
+
+        /* ===== СТИЛЬ КАРТОЧКИ ===== */
+        .music-card {
+            background: #0e0b09;
+            border: 2px solid #32241d;
+            border-radius: 0px;
+            box-shadow: 
+                0 0 0 1px #4f3323 inset,
+                0 10px 25px -10px #000,
+                0 0 20px rgba(100, 40, 15, 0.3);
+            transition: all 0.4s;
+            padding: 20px 18px 22px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(2px);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .music-card:hover {
+            transform: translateY(-8px);
+            border-color: #a6653a;
+            box-shadow: 
+                0 0 0 2px #a76030 inset,
+                0 15px 30px -8px #300c00,
+                0 0 32px #9f5e31;
+            background: #120e0b;
+        }
+
+        .music-card::after {
+            content: "⚰️";
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-size: 1.8rem;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 2px #b35f2a);
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .music-card:hover::after {
+            opacity: 0.5;
+            transform: rotate(3deg) scale(1.1);
+        }
+
+        .card-cover {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border: 3px solid #3a2b21;
+            filter: grayscale(40%) contrast(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+            margin-bottom: 18px;
+            transition: 0.3s;
+        }
+
+        .music-card:hover .card-cover {
+            border-color: #b27a4f;
+            filter: grayscale(0%) contrast(1.15);
+            box-shadow: 0 8px 25px #3f1e0b;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: #ebdbbc;
+            text-shadow: 2px 2px 0 #2a170e;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .card-sub {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: #b58053;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            border-left: 3px solid #9b5f33;
+            padding-left: 10px;
+        }
+
+        .card-meta {
+            font-size: 0.9rem;
+            color: #ac9b88;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 8px 0 10px;
+            border-top: 1px dashed #423327;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        .card-meta div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        /* ===== УЗКИЙ ФУТЕР БЕЗ ССЫЛОК ===== */
+        footer {
+            margin-top: 70px;
+            border-top: 2px solid #3d2d22;
+            padding: 20px 0 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #6f5b4a;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #382d24;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        /* адаптация */
+        @media (max-width: 1000px) {
+            .music-grid { grid-template-columns: repeat(2, 1fr); }
+            .angelic-title { font-size: 3rem; letter-spacing: 8px; }
+        }
+        @media (max-width: 650px) {
+            .music-grid { grid-template-columns: 1fr; }
+            footer { max-width: 90%; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="container">
+        <span class="logo"></span>
+        <nav>
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li class="btn dropdown">
+                    <a href="#">Contacts ⸸</a>
+                    <div class="dropdown-content">
+                        <a href="https://t.me/thedeadpoetsrefuge" target="_blank">
+                            <span class="telegram-icon"></span> Telegram
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="angelic-header">
+        <div class="angelic-title">The Harmful Angel Never Fail</div>
+        <div class="angelic-sub">⸸ fallen hymns & crimson devotion ⸸</div>
+    </div>
+
+    <div class="music-grid">
+        <a href="TheHarmfulAngel.html" class="music-card">
+            <img src="arts/image.png" alt="The Harmful Angel" class="card-cover">
+            <div class="card-title">The Harmful Angel</div>
+            <div class="card-sub">Single</div>
+            <div class="card-meta">
+                <div>🗓️ 10.10.2025</div>
+                <div>🎵 Electronicore, Gothic rock, Dark-cabaret</div>
+                <div>✟ †ＥＸＳＵＬ†</div>
+            </div>
+        </a>
+
+        <a href="BloodyRain.html" class="music-card">
+            <img src="arts/photo_2026-02-28_14-30-23.jpg" alt="Bloody Rain" class="card-cover">
+            <div class="card-title">Bloody Rain</div>
+            <div class="card-sub">Single</div>
+            <div class="card-meta">
+                <div>🗓️ 12.11.2026</div>
+                <div>🎵 Electronicore, Gothic rock, Depressive metal</div>
+                <div>✟ †ＥＸＳＵＬ†</div>
+            </div>
+        </a>
+    </div>
+
+    <footer>
+        <p>Copyright ® 2026 All rights Reserved</p>
+    </footer>
+</div>
+</body>
+</html>
